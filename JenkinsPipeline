@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo 'Getting code from Git'
+                git 'https://github.com/yourname/repo.git'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                echo 'Compiling Java...'
+                bat 'javac Hello.java'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                echo 'Archiving artifacts...'
+                archiveArtifacts '*.class'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'BUILD SUCCESS ✅'
+        }
+        failure {
+            echo 'BUILD FAILED ❌'
+        }
+    }
+}
