@@ -5,21 +5,32 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checkout stage from Jenkinsfile'
+                echo 'Getting code from Git'
+                git 'https://github.com/yourname/repo.git'
             }
         }
 
-        stage('Build') {
+        stage('Compile') {
             steps {
-                echo 'Build stage from Jenkinsfile'
+                echo 'Compiling Java...'
+                bat 'javac Hello.java'
             }
         }
 
-        stage('Test') {
+        stage('Archive') {
             steps {
-                echo 'Test stage from Jenkinsfile'
+                echo 'Archiving artifacts...'
+                archiveArtifacts '*.class'
             }
         }
+    }
 
+    post {
+        success {
+            echo 'BUILD SUCCESS ✅'
+        }
+        failure {
+            echo 'BUILD FAILED ❌'
+        }
     }
 }
